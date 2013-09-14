@@ -7,7 +7,7 @@ class AccountController < ApplicationController
       user = User.find_by_login( tmpRemoteUser )
       unless user.nil?
         # Valid user
-        logger.info ">>> Login REMOTE_USER: " + user
+        logger.info ">>> Login REMOTE_USER: " + tmpRemoteUser
         return false if !user.active?
         user.update_attribute(:last_login_on, Time.now) if user && !user.new_record?
         self.logged_user = user
