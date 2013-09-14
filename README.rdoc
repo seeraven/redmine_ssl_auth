@@ -13,9 +13,10 @@ http://github.com/tranthamp/redmine_ssl_auth.git.
 
 It's very simple
 
-* Install the plugin:
+* Install the plugin:<pre>
   cd YOURREDMINESRC/plugins
   git clone git://github.com/seeraven/redmine_ssl_auth.git
+  </pre>
 * Follow the note of tranthamp:
   In order for this plugin to work correctly, you must comment out the
   default root and login routes in the redmine app's config/routes.rb. This
