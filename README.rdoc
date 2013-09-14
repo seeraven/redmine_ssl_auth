@@ -13,19 +13,18 @@ http://github.com/tranthamp/redmine_ssl_auth.git.
 
 It's very simple
 
-* Install the plugin:<pre>
-  cd YOURREDMINESRC/plugins
-  git clone git://github.com/seeraven/redmine_ssl_auth.git
-  </pre>
+* Install the plugin:
+   cd YOURREDMINESRC/plugins
+   git clone git://github.com/seeraven/redmine_ssl_auth.git
 * Follow the note of tranthamp:
-  In order for this plugin to work correctly, you must comment out the
-  default root and login routes in the redmine app's config/routes.rb. This
-  is due to the fact that those routes are matched before the plugin's routes.
+   In order for this plugin to work correctly, you must comment out the
+   default root and login routes in the redmine app's config/routes.rb. This
+   is due to the fact that those routes are matched before the plugin's routes.
   So edit your config/routes.rb file now!
 * Just to be on the safe side, perform the plugin migration stuff:
-  rake redmine:plugins:migrate RAILS_ENV=production
+   rake redmine:plugins:migrate RAILS_ENV=production
 * Restart your webserver:
-  /etc/init.d/apache2 restart  
+   /etc/init.d/apache2 restart  
 * Configure apache for SSL authentication (see Configuration)
 * Visit https://YOURSITE/login and it will login automatically
 
