@@ -1,12 +1,30 @@
-= Redmine SSL auth plugin
+= Redmine SSL auth plugin for Redmine 2.x
 
-This redmine plugin enables authentication using SSL client certificates
+This redmine plugin enables authentication using SSL client certificates. This fork
+adds support of the REMOTE_USER environment variable set by apache for all users
+authenticated. In combination with the FakeBasicAuth this contains the DN of a
+client certificate.
+
+The original module can be found on http://github.com/koke/redmine_ssl_auth.git.
+This fork is based on the excellent port to Redmine 2.x by
+http://github.com/tranthamp/redmine_ssl_auth.git.
 
 == Usage
 
 It's very simple
 
-* Install the plugin: ruby script/plugin install git://github.com/koke/redmine_ssl_auth.git
+* Install the plugin:
+  cd YOURREDMINESRC/plugins
+  git clone git://github.com/seeraven/redmine_ssl_auth.git
+* Follow the note of tranthamp:
+  In order for this plugin to work correctly, you must comment out the
+  default root and login routes in the redmine app's config/routes.rb. This
+  is due to the fact that those routes are matched before the plugin's routes.
+  So edit your config/routes.rb file now!
+* Just to be on the safe side, perform the plugin migration stuff:
+  rake redmine:plugins:migrate RAILS_ENV=production
+* Restart your webserver:
+  /etc/init.d/apache2 restart  
 * Configure apache for SSL authentication (see Configuration)
 * Visit https://YOURSITE/login and it will login automatically
 
@@ -37,7 +55,7 @@ In my case, I find this to be the configuration I wanted
 
         SSLVerifyClient optional
         SSLVerifyDepth 1
-        SSLOptions +StdEnvVars
+        SSLOptions +StdEnvVars     # <= This takes much time and is not necessary with this version!
         SSLOptions +FakeBasicAuth
         
         <Location /login/ssl>
