@@ -2,7 +2,7 @@ class AccountController < ApplicationController
   def try_ssl_auth
     # First check REMOTE_USER variable
     tmpRemoteUser  = request.env["REMOTE_USER"]
-    if tmpRemoteUser:
+    if tmpRemoteUser
       # Interpret REMOTE_USER as user login name (e.g., using BasicAuth)
       user = User.find_by_login( tmpRemoteUser )
       unless user.nil?
@@ -15,13 +15,8 @@ class AccountController < ApplicationController
       end
 
       # Interpret REMOTE_USER as a DN. Extract the email
-      matchRes = tmpRemoteUser.scan(/emailAddress=([\w\d\-\.]+@[\w\d\-\.]+\.[\w\d]+)\//).flatten
+      matchRes = tmpRemoteUser.scan(/emailAddress=([\w\d\-\.]+@[\w\d\-\.]+\.[\w\d]+)/).flatten
       tmpEmail = matchRes.first
-      if tmpEmail.nil?
-        # Try again assuming emailAddress is the last item
-        matchRes = tmpRemoteUser.scan(/emailAddress=([\w\d\-\.]+@[\w\d\-\.]+\.[\w\d]+)/).flatten
-        tmpEmail = matchRes.first
-      end
 
       # Save the email in the session if available.
       if tmpEmail
@@ -44,7 +39,7 @@ class AccountController < ApplicationController
 
     # Try the variable HTTP_SSL_CLIENT_S_DN next
     if session[:email].nil? and request.env['HTTP_SSL_CLIENT_S_DN']
-      tmp = request.env['HTTP_SSL_CLIENT_S_DN'].scan(/emailAddress=([\w\d\-\.]+@[\w\d\-\.]+\.[\w\d]+)\//).flatten
+      tmp = request.env['HTTP_SSL_CLIENT_S_DN'].scan(/emailAddress=([\w\d\-\.]+@[\w\d\-\.]+\.[\w\d]+)/).flatten
       session[:email] = tmp.first
     end
 
